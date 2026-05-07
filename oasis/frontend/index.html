@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OASIS | AI Smart Career Assistant</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell" data-mode="garden">
+      <aside class="sidebar" aria-label="主要導覽">
+        <div class="brand">
+          <div class="brand-logo" aria-hidden="true"></div>
+          <div>
+            <strong>OASIS</strong>
+            <small>找工作，更適合你</small>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="garden" type="button"><span class="icon">⌂</span>首頁 / 花園</button>
+          <button class="nav-item" data-view="background" type="button"><span class="icon">▤</span>結構化背景</button>
+          <button class="nav-item" data-view="match" type="button"><span class="icon">◇</span>JD Match</button>
+          <button class="nav-item" data-view="resume" type="button"><span class="icon">▣</span>履歷生成</button>
+          <button class="nav-item" data-view="convert" type="button"><span class="icon">⇄</span>履歷轉換</button>
+          <button class="nav-item" data-view="settings" type="button"><span class="icon">⚙</span>設定</button>
+        </nav>
+
+        <section class="fatigue-card osi-note-card">
+          <div class="fatigue-plant"><span><i class="osi-body-gloss"></i><i class="osi-foot left"></i><i class="osi-foot right"></i></span></div>
+          <strong>Osi 小語</strong>
+          <p>先整理背景，再分析職缺，最後生成履歷。每一步都會讓下一步更準。</p>
+        </section>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <div class="greeting-cluster">
+            <div class="hero-osi brand-sprite" aria-hidden="true">
+              <i class="osi-glow"></i><i class="osi-sprout"></i><i class="osi-body-gloss"></i><span class="osi-face"></span><i class="osi-foot left"></i><i class="osi-foot right"></i>
+            </div>
+            <div class="speech-bubble">
+              <p class="eyebrow">歡迎來到 OASIS</p>
+              <h1>讓 Osi 陪你把經歷整理成更貼近職缺的履歷。</h1>
+            </div>
+          </div>
+          <div class="topbar-actions">
+            <label class="search">
+              <span>⌕</span>
+              <input id="globalSearch" type="search" placeholder="搜尋職缺、公司或技能關鍵字" />
+            </label>
+            <button class="profile-button" id="profileButton" type="button" data-view="settings">
+              <span class="avatar" id="userAvatar">O</span>
+              <span id="userDisplayName">使用者</span>
+              <span>⌄</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="dashboard-grid">
+          <section class="content-panel" id="gardenView">
+            <article class="garden-stage">
+              <div class="section-heading">
+                <div>
+                  <h2>我的求職花園</h2>
+                  <p>投遞會變成種子，面試會長成新芽，錄取會開花，挫折也能變成養分。</p>
+                </div>
+                <button class="primary-button" id="addApplicationBtn" type="button">＋ 新增投遞</button>
+              </div>
+              <div class="garden-wrap">
+                <div class="garden-visual" id="gardenVisual" aria-live="polite"></div>
+              </div>
+            </article>
+
+            <div class="lower-grid">
+              <article class="quick-actions">
+                <h2>快速行動</h2>
+                <div class="action-grid">
+                  <button data-view="background" type="button"><span>▤</span>整理背景</button>
+                  <button data-view="match" type="button"><span>◇</span>分析 JD</button>
+                  <button data-view="resume" type="button"><span>▣</span>生成履歷</button>
+                  <button data-view="convert" type="button"><span>⇄</span>履歷轉換</button>
+                </div>
+              </article>
+              <article class="sprites-panel">
+                <h2>Osi 工作流</h2>
+                <ol class="workflow-list">
+                  <li>建立 7 區段背景資料。</li>
+                  <li>用 JD Match 找出已對應、需要補答、還沒有的需求。</li>
+                  <li>針對需要補答的需求補上具體細節。</li>
+                  <li>生成履歷時優先採用你補答的內容。</li>
+                </ol>
+              </article>
+            </div>
+          </section>
+
+          <section class="content-panel hidden" id="backgroundView">
+            <div class="section-heading">
+              <div>
+                <h2>結構化背景</h2>
+                <p>每筆資料都有名稱與描述，系統會轉成帶 ID 的 markdown，讓 AI 能精準引用。</p>
+              </div>
+              <button class="secondary-button" id="clearBackgroundBtn" type="button">清空</button>
+            </div>
+            <div id="backgroundSections" class="background-grid"></div>
+            <div class="button-row">
+              <button class="primary-button" id="saveBackgroundBtn" type="button">儲存背景</button>
+              <small class="api-hint" id="backgroundStatus"></small>
+            </div>
+            <article class="preview-pane">
+              <h3>format_background() 預覽</h3>
+              <pre class="json-output" id="backgroundMarkdown"></pre>
+            </article>
+          </section>
+
+          <section class="content-panel hidden" id="matchView">
+            <div class="office-layout">
+              <form class="editor-pane" id="matchForm">
+                <div class="section-heading">
+                  <div>
+                    <h2>JD Match</h2>
+                    <p>分析 JD 跟你的背景，整理出哪些已經對應上、哪些需要補答、哪些還沒有對應材料。</p>
+                  </div>
+                </div>
+                <label>目標職務<input name="targetRole" placeholder="例如：資料分析師" /></label>
+                <label>公司名稱<input name="company" placeholder="例如：玉山銀行" /></label>
+                <label>JD / 職缺需求<textarea name="jd" rows="12" placeholder="貼上職缺描述"></textarea></label>
+                <button class="primary-button" type="submit">分析 JD 與背景匹配</button>
+                <small class="api-hint" id="matchApiHint"></small>
+              </form>
+              <article class="preview-pane">
+                <h3>分析結果</h3>
+                <div id="matchResult"></div>
+                <h3>補答需要更多細節的需求</h3>
+                <div id="matchSupplementPanel" class="supplement-panel"></div>
+                <button class="secondary-button" id="saveSupplementsBtn" type="button">儲存補答</button>
+              </article>
+            </div>
+          </section>
+
+          <section class="content-panel hidden" id="resumeView">
+            <div class="office-layout">
+              <form class="editor-pane" id="resumeForm">
+                <div class="section-heading">
+                  <div>
+                    <h2>客製化履歷生成</h2>
+                    <p>支援補答資訊、區塊篇幅控制、公司文化語氣，輸出尾端附對齊說明。</p>
+                  </div>
+                </div>
+                <label>目標職務<input name="targetRole" placeholder="例如：資料分析師" /></label>
+                <label>公司名稱<input name="company" placeholder="例如：目標公司" /></label>
+                <label>職缺描述<textarea name="jd" rows="8" placeholder="貼上職缺描述"></textarea></label>
+
+                <fieldset class="sections-fieldset">
+                  <legend>履歷區塊與篇幅控制</legend>
+                  <label class="check"><input type="checkbox" name="sections" value="self_intro" checked /> 自我介紹 <input data-length-key="self_intro" placeholder="自訂篇幅（留空使用預設）" /></label>
+                  <label class="check"><input type="checkbox" name="sections" value="motivation" checked /> 應徵動機 <input data-length-key="motivation" placeholder="自訂篇幅（留空使用預設）" /></label>
+                  <label class="check"><input type="checkbox" name="sections" value="experience" checked /> 工作經驗 <input data-length-key="experience" placeholder="自訂篇幅（留空使用預設）" /></label>
+                  <label class="check"><input type="checkbox" name="sections" value="projects" checked /> 專案 <input data-length-key="projects" placeholder="自訂篇幅（留空使用預設）" /></label>
+                  <label class="check"><input type="checkbox" name="sections" value="skills" checked /> 技能 <input data-length-key="skills" placeholder="自訂篇幅（留空使用預設）" /></label>
+                  <label class="check"><input type="checkbox" name="sections" value="certifications" /> 證照 <input data-length-key="certifications" placeholder="自訂篇幅（留空使用預設）" /></label>
+                  <label class="check custom-check"><input type="checkbox" name="sections" value="custom" /> 自訂 <input name="customSection" placeholder="例如：未來職涯規劃" /><input data-length-key="custom" placeholder="自訂篇幅（留空使用預設）" /></label>
+                </fieldset>
+
+                <div class="button-row">
+                  <button class="primary-button" type="submit">生成履歷</button>
+                  <button class="secondary-button" id="onePageBtn" type="button">One Page CV</button>
+                  <button class="secondary-button" id="starBtn" type="button">STAR 改寫</button>
+                </div>
+                <small class="api-hint" id="resumeApiHint"></small>
+              </form>
+              <article class="preview-pane"><div class="paper" id="resumePreview"></div></article>
+            </div>
+          </section>
+
+          <section class="content-panel hidden" id="convertView">
+            <div class="office-layout">
+              <form class="editor-pane" id="convertForm">
+                <div class="section-heading">
+                  <div>
+                    <h2>履歷轉換</h2>
+                    <p>已經有一份履歷想換領域投？貼進來，選一種轉換方式，AI 會把它重新整理成新領域可以讀懂的版本。</p>
+                  </div>
+                </div>
+                <label>既有履歷<textarea name="originalResume" rows="12" placeholder="貼上原履歷內容"></textarea></label>
+                <div class="domain-row">
+                  <label>原領域<input name="fromDomain" placeholder="例如：行銷" /></label>
+                  <label>目標領域<input name="toDomain" placeholder="例如：資料分析" /></label>
+                </div>
+                <label>目標 JD<textarea name="targetJd" rows="6" placeholder="可選，貼上目標職缺"></textarea></label>
+                <fieldset class="mode-fieldset">
+                  <legend>轉換模式</legend>
+                  <label class="mode-radio"><input type="radio" name="convertMode" value="translate" checked /><span><strong>跨領域轉換</strong><small>保留原履歷結構，重新框定到新領域。</small></span></label>
+                  <label class="mode-radio"><input type="radio" name="convertMode" value="rewrite" /><span><strong>依背景重寫</strong><small>使用結構化背景，不捏造資訊。</small></span></label>
+                </fieldset>
+                <button class="primary-button" type="submit">開始轉換</button>
+                <small class="api-hint" id="convertApiHint"></small>
+              </form>
+              <article class="preview-pane"><div class="paper" id="convertPreview"></div></article>
+            </div>
+          </section>
+
+          <section class="content-panel hidden" id="settingsView">
+            <h2>設定</h2>
+            <div class="api-key-card account-card">
+              <h3>使用者帳號</h3>
+              <p>登入後右上角會顯示你的名稱，之後可接後端個人資料與求職紀錄。</p>
+              <div class="api-key-row">
+                <input id="authNameInput" type="text" placeholder="名稱（註冊用）" autocomplete="name" />
+                <input id="authEmailInput" type="email" placeholder="Email" autocomplete="email" />
+                <input id="authPasswordInput" type="password" placeholder="密碼至少 8 碼" autocomplete="current-password" />
+              </div>
+              <div class="button-row">
+                <button class="primary-button" id="loginBtn" type="button">登入</button>
+                <button class="secondary-button" id="registerBtn" type="button">註冊</button>
+                <button class="secondary-button" id="logoutBtn" type="button">登出</button>
+              </div>
+              <small class="api-hint" id="authStatus"></small>
+            </div>
+            <div class="api-key-card">
+              <h3>OASIS App Token</h3>
+              <p>前端只儲存 APP TOKEN，用來通過後端驗證；OpenAI API KEY 必須放在後端 `.env`，不可填在前端。</p>
+              <div class="api-key-row">
+                <input id="apiKeyInput" type="password" placeholder="貼上後端 .env 的 APP_TOKEN" autocomplete="off" />
+                <input id="apiBaseInput" type="url" placeholder="後端網址，例如 http://127.0.0.1:8001" />
+                <select id="modelSelect">
+                  <option value="gpt-4o">gpt-4o</option>
+                  <option value="gpt-4o-mini">gpt-4o-mini</option>
+                  <option value="gpt-4-turbo">gpt-4-turbo</option>
+                </select>
+                <button class="primary-button" id="saveApiKeyBtn" type="button">儲存</button>
+                <button class="secondary-button" id="testApiTokenBtn" type="button">測試連線</button>
+              </div>
+              <small class="api-hint" id="apiKeyStatus"></small>
+            </div>
+          </section>
+
+          <aside class="right-rail">
+            <article class="score-card">
+              <h2>職缺適配度</h2>
+              <div class="score-ring is-empty" id="fitScoreRing" style="--score:0"><strong id="fitScoreValue">--</strong><span>/100</span></div>
+              <p id="fitScoreText">執行 JD Match 後，Osi 會根據背景估算適配分數。</p>
+            </article>
+            <article class="assistant-card">
+              <div class="helper-sprite brand-sprite" aria-hidden="true">
+                <i class="osi-glow"></i><i class="osi-sprout"></i><i class="osi-body-gloss"></i><span class="osi-face"></span><i class="osi-foot left"></i><i class="osi-foot right"></i>
+              </div>
+              <div>
+                <h2>Osi 提醒</h2>
+                <p id="osiCompanionMessage">補答得越具體，履歷越能貼近 JD，也越不需要 AI 自己猜測。</p>
+              </div>
+            </article>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
