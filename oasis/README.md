@@ -166,11 +166,11 @@ Switching to OpenAI JSON mode significantly improved consistency and reduced par
 
 ### Resume Generation Workflow
 
-![履歷生成](screenshots/03-resume.png)
+![履歷生成](screenshots/04-resume.png)
 
 ### Resume Conversion
 
-![履歷轉換](screenshots/04-convert.png)
+![履歷轉換](screenshots/05-convert.png)
 
 ---
 
